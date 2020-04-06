@@ -3,24 +3,27 @@ package com.example.yujoai;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity
-{
+public class MainActivity extends AppCompatActivity {
 
     // Will contain output speech of User
     private TextView tvxResult;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tvxResult = (TextView) findViewById(R.id.txvResult);
@@ -28,8 +31,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     //Gets what User said
-    public void getSpeechInput(View view)
-    {
+    public void getSpeechInput(View view) {
         // Request user to speak and pass through a Recognizer
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 
@@ -37,12 +39,10 @@ public class MainActivity extends AppCompatActivity
         // Takes user input as free form
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
 
-        if(intent.resolveActivity(getPackageManager()) != null)
-        {
+        // Verify if speech is supported
+        if (intent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(intent, 10);
-        }
-        else
-        {
+        } else {
             Toast.makeText(this, "Speech is not supported", Toast.LENGTH_SHORT).show();
         }
     }
@@ -51,13 +51,21 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch(requestCode)
-        {
+        switch (requestCode) {
             case 10:
-                if(resultCode == RESULT_OK && data != null)
-                {
-                   ArrayList<String> results =  data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                if (resultCode == RESULT_OK && data != null) {
+                    ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    thinkAboutResponse(results);
                 }
         }
     }
+
+    protected void thinkAboutResponse(ArrayList<String> newResults)
+    {
+        tvxResult.setText(newResults.get(0));
+    }
+
 }
+
+
+
