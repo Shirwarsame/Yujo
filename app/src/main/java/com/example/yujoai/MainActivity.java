@@ -12,6 +12,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.alicebot.ab.Bot;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     //Contains text to convert
     private TextToSpeech textToSpeech;
     private Boolean stillTalking = true;
+
+    public Bot bot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             // Verification if feature is supported
             public void onInit(int status) {
                 if (status == TextToSpeech.SUCCESS) {
-                    int ttsLang = textToSpeech.setLanguage(Locale.US);
+                    int ttsLang = textToSpeech.setLanguage(Locale.UK);
 
                     if (ttsLang == TextToSpeech.LANG_MISSING_DATA
                             || ttsLang == TextToSpeech.LANG_NOT_SUPPORTED) {
@@ -85,25 +90,24 @@ public class MainActivity extends AppCompatActivity {
     // Handles Response processing
      void thinkAboutResponse(ArrayList<String> newResults) {
          String response;
-         for (int i = 0; i < newResults.size(); i++) {
-             if (newResults.get(i).contains("sad")) {
+             if (newResults.get(0).contains("sad")) {
                  response = "Why do you feel that way?";
-                 tvxResult.setText(newResults.get(i));
+                 tvxResult.setText(newResults.get(0));
              }
-             if (newResults.get(i).contains("happy")) {
-                 response = "Really what happened?";
-                 tvxResult.setText(newResults.get(i));
-             }
-             if (newResults.get(i).contains("confused")) {
+             if (newResults.get(0).contains("confused")) {
                  response = "Think about it for a little while";
-                 tvxResult.setText(newResults.get(i));
+                 tvxResult.setText(newResults.get(0));
+             }
+             if (newResults.get(0).contains("happy")) {
+                 response = "Really what happened?";
+                 tvxResult.setText(newResults.get(0));
              }
              else {
                  response = "I didnt get that";
-                 tvxResult.setText(newResults.get(i));
+                 tvxResult.setText(newResults.get(0));
              }
              outputResponse(response);
-         }
+
     }
 
     // Handles Response Output to User
