@@ -17,6 +17,8 @@ import org.alicebot.ab.Bot;
 
 import java.util.ArrayList;
 
+//Prebuit AIMC Engine used from https://github.com/Hariofspades/ChatBot
+
 public class MainActivity extends AppCompatActivity {
 
     // Will contain output speech of User
@@ -82,33 +84,10 @@ public class MainActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK && data != null) {
                     ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     // After data is extracted move to processing
-                    thinkAboutResponse(results);
                 }
         }
     }
 
-    // Handles Response processing
-     void thinkAboutResponse(ArrayList<String> newResults) {
-         String response;
-             if (newResults.get(0).contains("sad")) {
-                 response = "Why do you feel that way?";
-                 tvxResult.setText(newResults.get(0));
-             }
-             if (newResults.get(0).contains("confused")) {
-                 response = "Think about it for a little while";
-                 tvxResult.setText(newResults.get(0));
-             }
-             if (newResults.get(0).contains("happy")) {
-                 response = "Really what happened?";
-                 tvxResult.setText(newResults.get(0));
-             }
-             else {
-                 response = "I didnt get that";
-                 tvxResult.setText(newResults.get(0));
-             }
-             outputResponse(response);
-
-    }
 
     // Handles Response Output to User
     void outputResponse(String response) {
