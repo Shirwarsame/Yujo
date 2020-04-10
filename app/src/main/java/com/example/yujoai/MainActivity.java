@@ -33,7 +33,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
-//Main AMIC https://github.com/Hariofspades/ChatBot
 
 //Prebuit AIMC Engine used from https://github.com/Hariofspades/ChatBot
 
@@ -112,6 +111,16 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+
+        //get the working directory
+        MagicStrings.root_path = Environment.getExternalStorageDirectory().toString() + "/hari";
+        System.out.println("Working Directory = " + MagicStrings.root_path);
+        AIMLProcessor.extension =  new PCAIMLProcessorExtension();
+        //Assign the AIML files to bot for processing
+        bot = new Bot("hari", MagicStrings.root_path, "chat");
+        chat = new Chat(bot);
+        String[] args = null;
+        mainFunction(args);
     }
         //check SD card availability
         public static boolean isSDCARDAvailable(){
@@ -157,7 +166,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     // Handles Response Output to User
     void outputResponse(String response) {
         int speechStatus = textToSpeech.speak(response, TextToSpeech.QUEUE_FLUSH, null);
@@ -165,6 +173,22 @@ public class MainActivity extends AppCompatActivity {
         if (speechStatus == TextToSpeech.ERROR) {
             Log.e("TTS", "Error in converting Text to Speech!");
         }
+    }
+    private void sendMessage(String message) {
+        ChatMessage chatMessage = new ChatMessage(message, true, false);
+        mAdapter.add(chatMessage);
+    }
+    //Request and response of user and the bot
+    public static void mainFunction (String[] args) {
+        MagicBooleans.trace_mode = false;
+        System.out.println("trace mode = " + MagicBooleans.trace_mode);
+        Graphmaster.enableShortCuts = true;
+        Timer timer = new Timer();
+        String request = "Hello.";
+        String response = chat.multisentenceRespond(request);
+
+        System.out.println("Human: "+request);
+        System.out.println("Robot: " + response);
     }
 }
 
