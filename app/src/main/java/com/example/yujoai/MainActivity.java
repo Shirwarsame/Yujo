@@ -162,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK && data != null) {
                     ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     // After data is extracted move to processing
+                    processData(results);
                 }
         }
     }
@@ -178,6 +179,19 @@ public class MainActivity extends AppCompatActivity {
         ChatMessage chatMessage = new ChatMessage(message, true, false);
         mAdapter.add(chatMessage);
     }
+
+    public void processData(ArrayList<String> processingData) {
+        String message = processingData.get(0);
+        //bot
+        String response = chat.multisentenceRespond(message);
+        if (TextUtils.isEmpty(message)) {
+            return;
+        }
+        outputResponse(response);
+        sendMessage(message);
+        mEditTextMessage.setText("");
+    }
+
     //Request and response of user and the bot
     public static void mainFunction (String[] args) {
         MagicBooleans.trace_mode = false;
