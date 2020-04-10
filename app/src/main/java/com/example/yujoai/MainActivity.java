@@ -77,6 +77,41 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //checking SD card availablility
+        boolean a = isSDCARDAvailable();
+        //receiving the assets from the app directory
+        AssetManager assets = getResources().getAssets();
+        File jayDir = new File(Environment.getExternalStorageDirectory().toString() + "/hari/bots/Hari");
+        boolean b = jayDir.mkdirs();
+        if (jayDir.exists()) {
+            //Reading the file
+            try {
+                for (String dir : assets.list("Hari")) {
+                    File subdir = new File(jayDir.getPath() + "/" + dir);
+                    boolean subdir_check = subdir.mkdirs();
+                    for (String file : assets.list("Hari/" + dir)) {
+                        File f = new File(jayDir.getPath() + "/" + dir + "/" + file);
+                        if (f.exists()) {
+                            continue;
+                        }
+                        InputStream in = null;
+                        OutputStream out = null;
+                        in = assets.open("Hari/" + dir + "/" + file);
+                        out = new FileOutputStream(jayDir.getPath() + "/" + dir + "/" + file);
+                        //copy file from assets to the mobile's SD card or any secondary memory
+                        copyFile(in, out);
+                        in.close();
+                        in = null;
+                        out.flush();
+                        out.close();
+                        out = null;
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
         //check SD card availability
         public static boolean isSDCARDAvailable(){
