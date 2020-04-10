@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -39,24 +38,21 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     private Button mButtonSend;
-    private EditText mEditTextMessage;
     private ImageView mImageView;
     public Bot bot;
     public static Chat chat;
     private ChatMessageAdapter mAdapter;
     private TextToSpeech textToSpeech;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mButtonSend = (Button) findViewById(R.id.btn_send);
-        mEditTextMessage = (EditText) findViewById(R.id.et_message);
         mImageView = (ImageView) findViewById(R.id.iv_image);
         mAdapter = new ChatMessageAdapter(this, new ArrayList<ChatMessage>());
 
-
+        // Initialize obj for Speech Output
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             // Verification if feature is supported
@@ -112,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        //get the working directory
+        //get the working directory where assets are stored
         MagicStrings.root_path = Environment.getExternalStorageDirectory().toString() + "/hari";
         System.out.println("Working Directory = " + MagicStrings.root_path);
         AIMLProcessor.extension =  new PCAIMLProcessorExtension();
@@ -153,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    //Executed after input speech is recorded
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -161,13 +158,12 @@ public class MainActivity extends AppCompatActivity {
                 // Extracting data from Recognizer and adding into Results
                 if (resultCode == RESULT_OK && data != null) {
                     ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    // After data is extracted move to processing
+                    // After data is extracted move to AI processing
                     processData(results);
                 }
         }
     }
-
-    // Handles Response Output to User
+    // Handles Speech Output to User
     void outputResponse(String response) {
         int speechStatus = textToSpeech.speak(response, TextToSpeech.QUEUE_FLUSH, null);
 
@@ -175,11 +171,13 @@ public class MainActivity extends AppCompatActivity {
             Log.e("TTS", "Error in converting Text to Speech!");
         }
     }
+    // Explicitly send Input message to AI
     private void sendMessage(String message) {
         ChatMessage chatMessage = new ChatMessage(message, true, false);
         mAdapter.add(chatMessage);
     }
 
+    // Processes input data and obtain response from AI
     public void processData(ArrayList<String> processingData) {
         String message = processingData.get(0);
         //bot
@@ -187,12 +185,11 @@ public class MainActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(message)) {
             return;
         }
-        outputResponse(response);
         sendMessage(message);
-        mEditTextMessage.setText("");
+        outputResponse(response);
     }
 
-    //Request and response of user and the bot
+    // Initialize user request and bot response
     public static void mainFunction (String[] args) {
         MagicBooleans.trace_mode = false;
         System.out.println("trace mode = " + MagicBooleans.trace_mode);
