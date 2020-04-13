@@ -2,10 +2,12 @@ package com.example.yujoai;
 
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.Voice;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.alicebot.ab.AIMLProcessor;
@@ -32,6 +35,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Set;
 
 //Prebuit AIMC Engine used from https://github.com/Hariofspades/ChatBot
 
@@ -42,8 +46,10 @@ public class MainActivity extends AppCompatActivity {
     public Bot bot;
     public static Chat chat;
     private ChatMessageAdapter mAdapter;
-    private TextToSpeech textToSpeech;
+    private TextToSpeech tts;
+    private Voice voice;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,25 +59,33 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new ChatMessageAdapter(this, new ArrayList<ChatMessage>());
 
         // Initialize obj for Speech Output
-        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+        tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             // Verification if feature is supported
             public void onInit(int status) {
                 if (status == TextToSpeech.SUCCESS) {
-                    int ttsLang = textToSpeech.setLanguage(Locale.UK);
-
-                    if (ttsLang == TextToSpeech.LANG_MISSING_DATA
-                            || ttsLang == TextToSpeech.LANG_NOT_SUPPORTED) {
-                        Log.e("TTS", "The Language is not supported!");
-                    } else {
-                        Log.i("TTS", "Language Supported.");
-                    }
-                    Log.i("TTS", "Initialization success.");
-                } else {
-                    Toast.makeText(getApplicationContext(), "TTS Initialization failed!", Toast.LENGTH_SHORT).show();
+                    Voice voiceobj = new Voice("en-us-x-sfg#male_1-local ",
+                            Locale.getDefault(), 1, 1, false, null);
+                    tts.setVoice(voiceobj);
                 }
+
             }
+
         });
+//        Set<Voice> voices = tts.getVoices();
+//        for (Voice tmpVoice : tts.getVoices()) {
+//            if (tmpVoice.getName().contains("#male") && tmpVoice.getName().contains("en-us")) {
+//                voice = tmpVoice;
+//                break;
+//            }
+//            else {
+//                voice = null;
+//            }
+//        }
+//        if (voice != null) {
+//            tts.setVoice(voice);
+//        }
+
 
         //checking SD card availablility
         boolean a = isSDCARDAvailable();
@@ -165,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
     }
     // Handles Speech Output to User
     void outputResponse(String response) {
-        int speechStatus = textToSpeech.speak(response, TextToSpeech.QUEUE_FLUSH, null);
+        int speechStatus = tts.speak(response, TextToSpeech.QUEUE_FLUSH, null);
 
         if (speechStatus == TextToSpeech.ERROR) {
             Log.e("TTS", "Error in converting Text to Speech!");
