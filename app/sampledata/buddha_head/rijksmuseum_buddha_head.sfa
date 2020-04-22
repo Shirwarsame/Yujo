@@ -1,0 +1,50 @@
+{
+  materials: [
+    {
+      name: 'None',
+      parameters: [
+        {
+          baseColor: 'rijksmuseum_buddha_colour',
+        },
+        {
+          baseColorTint: [
+            0.80000000000000004,
+            0.80000000000000004,
+            0.80000000000000004,
+            1,
+          ],
+        },
+        {
+          metallic: 1,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/obj_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'TexCoord',
+      'Orientation',
+    ],
+    collision: {},
+    file: 'sampledata/buddha_head/rijksmuseum_buddha_head.obj',
+    name: 'rijksmuseum_buddha_head',
+    recenter: 'root',
+    scale: 0.097331000000000001,
+  },
+  samplers: [
+    {
+      file: 'sampledata/buddha_head/rijksmuseum_buddha_colour.jpg',
+      name: 'rijksmuseum_buddha_colour',
+      pipeline_name: 'rijksmuseum_buddha_colour.jpg',
+    },
+  ],
+  version: '0.52:1',
+}

@@ -1,0 +1,50 @@
+{
+  materials: [
+    {
+      name: 'plato',
+      parameters: [
+        {
+          baseColor: 'plato',
+        },
+        {
+          baseColorTint: [
+            1,
+            1,
+            1,
+            1,
+          ],
+        },
+        {
+          metallic: 0,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/obj_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'TexCoord',
+      'Orientation',
+    ],
+    collision: {},
+    file: 'sampledata/greece_head/plato.obj',
+    name: 'plato',
+    recenter: 'root',
+    scale: 0.087816000000000005,
+  },
+  samplers: [
+    {
+      file: 'sampledata/greece_head/plato.jpg',
+      name: 'plato',
+      pipeline_name: 'plato.jpg',
+    },
+  ],
+  version: '0.54:2',
+}

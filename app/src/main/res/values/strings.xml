@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">Yujo</string>
+    <string name="app_name">YujoPet</string>
+    <string name="change_face">Change Faces</string>
+    
+    <string name="greece">Plato</string>
+    <string name="egypt">Ramses</string>
+    <string name="india">Buddha</string>
 </resources>
