@@ -35,7 +35,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Set;
 
 //Prebuit AIMC Engine used from https://github.com/Hariofspades/ChatBot
 
@@ -45,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageView mImageView;
     public Bot bot;
     public static Chat chat;
-    private ChatMessageAdapter mAdapter;
     private TextToSpeech tts;
     private Voice voice;
 
@@ -54,9 +52,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mButtonSend = (Button) findViewById(R.id.btn_send);
-        mImageView = (ImageView) findViewById(R.id.iv_image);
-        mAdapter = new ChatMessageAdapter(this, new ArrayList<ChatMessage>());
+        mButtonSend = findViewById(R.id.btn_send);
+        mImageView = findViewById(R.id.iv_image);
 
         // Initialize obj for Speech Output
         tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
@@ -64,28 +61,13 @@ public class MainActivity extends AppCompatActivity {
             // Verification if feature is supported
             public void onInit(int status) {
                 if (status == TextToSpeech.SUCCESS) {
-                    Voice voiceobj = new Voice("en-us-x-sfg#male_1-local ",
+                     voice = new Voice("en-us-x-sfg#male_1-local ",
                             Locale.getDefault(), 1, 1, false, null);
-                    tts.setVoice(voiceobj);
+                    tts.setVoice(voice);
                 }
-
             }
 
         });
-//        Set<Voice> voices = tts.getVoices();
-//        for (Voice tmpVoice : tts.getVoices()) {
-//            if (tmpVoice.getName().contains("#male") && tmpVoice.getName().contains("en-us")) {
-//                voice = tmpVoice;
-//                break;
-//            }
-//            else {
-//                voice = null;
-//            }
-//        }
-//        if (voice != null) {
-//            tts.setVoice(voice);
-//        }
-
 
         //checking SD card availablility
         boolean a = isSDCARDAvailable();
@@ -185,11 +167,6 @@ public class MainActivity extends AppCompatActivity {
             Log.e("TTS", "Error in converting Text to Speech!");
         }
     }
-    // Explicitly send Input message to AI
-    private void sendMessage(String message) {
-        ChatMessage chatMessage = new ChatMessage(message, true, false);
-        mAdapter.add(chatMessage);
-    }
 
     // Processes input data and obtain response from AI
     public void processData(ArrayList<String> processingData) {
@@ -199,12 +176,11 @@ public class MainActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(message)) {
             return;
         }
-        sendMessage(message);
         outputResponse(response);
     }
 
     // Initialize user request and bot response
-    public static void mainFunction (String[] args) {
+    public static void mainFunction(String[] args) {
         MagicBooleans.trace_mode = false;
         System.out.println("trace mode = " + MagicBooleans.trace_mode);
         Graphmaster.enableShortCuts = true;
@@ -212,8 +188,6 @@ public class MainActivity extends AppCompatActivity {
         String request = "Hello.";
         String response = chat.multisentenceRespond(request);
 
-        System.out.println("Human: "+request);
-        System.out.println("Robot: " + response);
     }
 }
 
