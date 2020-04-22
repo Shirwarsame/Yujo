@@ -12,7 +12,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -26,7 +25,6 @@ import org.alicebot.ab.Graphmaster;
 import org.alicebot.ab.MagicBooleans;
 import org.alicebot.ab.MagicStrings;
 import org.alicebot.ab.PCAIMLProcessorExtension;
-import org.alicebot.ab.Timer;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -41,7 +39,6 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     private Button mButtonSend;
-    private ImageView mImageView;
     public Bot bot;
     public static Chat chat;
     private TextToSpeech tts;
@@ -53,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mButtonSend = findViewById(R.id.btn_send);
-        mImageView = findViewById(R.id.iv_image);
 
         // Initialize obj for Speech Output
         tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
@@ -69,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        //checking SD card availablility
+        //Checking SD card availablility
         boolean a = isSDCARDAvailable();
-        //receiving the assets from the app directory
+        //Receiving the assets from the app directory
         AssetManager assets = getResources().getAssets();
         File jayDir = new File(Environment.getExternalStorageDirectory().toString() + "/hari/bots/Hari");
         boolean b = jayDir.mkdirs();
@@ -90,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                         OutputStream out = null;
                         in = assets.open("Hari/" + dir + "/" + file);
                         out = new FileOutputStream(jayDir.getPath() + "/" + dir + "/" + file);
-                        //copy file from assets to the mobile's SD card or any secondary memory
+                        //Copy file from assets to the mobile's SD card or any secondary memory
                         copyFile(in, out);
                         in.close();
                         in = null;
@@ -104,21 +100,21 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        //get the working directory where assets are stored
+        //Get the working directory where assets are stored
         MagicStrings.root_path = Environment.getExternalStorageDirectory().toString() + "/hari";
         System.out.println("Working Directory = " + MagicStrings.root_path);
         AIMLProcessor.extension =  new PCAIMLProcessorExtension();
-        //Assign the AIML files to bot for processing
+        //Initialize user request and bot response
         bot = new Bot("hari", MagicStrings.root_path, "chat");
         chat = new Chat(bot);
         String[] args = null;
         mainFunction(args);
     }
-        //check SD card availability
+        //Check SD card availability
         public static boolean isSDCARDAvailable(){
             return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)? true :false;
         }
-        //copying the file
+        //Copying the file
         private void copyFile(InputStream in, OutputStream out) throws IOException {
             byte[] buffer = new byte[1024];
             int read;
@@ -126,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
                 out.write(buffer, 0, read);
             }
         }
-
 
     //Gets what User said
     public void getSpeechInput(View view) {
@@ -179,15 +174,10 @@ public class MainActivity extends AppCompatActivity {
         outputResponse(response);
     }
 
-    // Initialize user request and bot response
     public static void mainFunction(String[] args) {
         MagicBooleans.trace_mode = false;
         System.out.println("trace mode = " + MagicBooleans.trace_mode);
         Graphmaster.enableShortCuts = true;
-        Timer timer = new Timer();
-        String request = "Hello.";
-        String response = chat.multisentenceRespond(request);
-
     }
 }
 
