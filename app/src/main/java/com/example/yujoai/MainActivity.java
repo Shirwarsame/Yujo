@@ -14,8 +14,6 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -53,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
     private SpeechRecognizer speech = null;
     private Intent recognizerIntent;
     private String LOG_TAG = "VoiceRecognitionActivity";
-    private static final int REQUEST_RECORD_PERMISSION = 100;
+    private static final int REQUEST_RECORD_PERMISSION = 45;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
