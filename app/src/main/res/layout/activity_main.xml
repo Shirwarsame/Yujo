@@ -16,13 +16,12 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <Button
+        <ToggleButton
             android:id="@+id/btn_send"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Say Hi"
-            android:gravity="center_vertical"
-            android:onClick="getSpeechInput" />
+            android:gravity="center_vertical" />
     </LinearLayout>
 
 </RelativeLayout>

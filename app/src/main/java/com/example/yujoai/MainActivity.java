@@ -14,8 +14,11 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -42,7 +45,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements RecognitionListener {
 
-    private Button mButtonSend;
+    private ToggleButton toggleButton;
     public Bot bot;
     public static Chat chat;
     private TextToSpeech tts;
@@ -57,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mButtonSend = findViewById(R.id.btn_send);
+        toggleButton = findViewById(R.id.btn_send);
 
         speech = SpeechRecognizer.createSpeechRecognizer(this);
         Log.i(LOG_TAG, "isRecognitionAvailable: " + SpeechRecognizer.isRecognitionAvailable(this));
@@ -69,11 +72,18 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 3);
 
-        ActivityCompat.requestPermissions
-                (MainActivity.this,
-                        new String[]{Manifest.permission.RECORD_AUDIO},
-                        REQUEST_RECORD_PERMISSION);
-
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                    @Override
+                                                    public void onCheckedChanged(CompoundButton buttonView,
+                                                                                 boolean isChecked) {
+                                                        if (isChecked) {
+                                                            ActivityCompat.requestPermissions
+                                                                    (MainActivity.this,
+                                                                            new String[]{Manifest.permission.RECORD_AUDIO},
+                                                                            REQUEST_RECORD_PERMISSION);
+                                                        }
+                                                    }
+                                                });
         // Initialize obj for Speech Output
         tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
