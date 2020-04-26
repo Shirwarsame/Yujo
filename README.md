@@ -2,7 +2,7 @@
 Friendship app implementing both AI speech and augmented reality
 
 # Installation Instructions
-1) Clone this github 
+1) Clone this repository
 2) Install Google AR from playstore
 3) Run the application in Android Studio
 4) Enable Storage permissions inside settings of the application
