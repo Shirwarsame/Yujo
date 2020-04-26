@@ -306,7 +306,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
                 buddha.getScaleController().setSensitivity(0);
                 buddha.getTranslationController().setEnabled(false);
 
-                buddha.getScaleController().setMinScale(0.3f);
+                buddha.getScaleController().setMinScale(0.2f);
 
                 buddha.setLocalPosition(new Vector3(0.1f,0.9f,0.1f));
 
@@ -323,7 +323,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
             //Remove moving and pinching from sculpture
             pharaoh.getScaleController().setSensitivity(0);
             pharaoh.getTranslationController().setEnabled(false);
-            pharaoh.getScaleController().setMinScale(0.3f);
+            pharaoh.getScaleController().setMinScale(0.2f);
 
             pharaoh.setLocalPosition(new Vector3(0.1f,0.9f,0.1f));
 
@@ -341,7 +341,7 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
 
 
             plato.getTranslationController().setEnabled(false);
-            plato.getScaleController().setMinScale(0.3f);
+            plato.getScaleController().setMinScale(0.2f);
 
             plato.setLocalPosition(new Vector3(0.1f,0.9f,0.1f));
 
